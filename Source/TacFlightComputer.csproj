@@ -61,6 +61,7 @@
       <Link>Window.cs</Link>
     </Compile>
     <Compile Include="FlightComputer.cs" />
+    <Compile Include="FlightComputerWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

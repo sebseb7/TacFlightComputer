@@ -16,6 +16,7 @@
  * is purely coincidental.
  */
 
+using KSP.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,19 +28,44 @@ namespace Tac
     [KSPAddon(KSPAddon.Startup.Flight, false)]
     public class TacFlightComputer : MonoBehaviour
     {
+        private string configFilename;
+        private FlightComputerWindow window;
+
         void Awake()
         {
             Debug.Log("TAC Flight Computer [" + this.GetInstanceID().ToString("X") + "][" + Time.time + "]: Awake");
+            configFilename = IOUtils.GetFilePathFor(this.GetType(), "FlightComputer.cfg");
+            window = new FlightComputerWindow();
         }
 
         void Start()
         {
             Debug.Log("TAC Flight Computer [" + this.GetInstanceID().ToString("X") + "][" + Time.time + "]: Start");
+            Load();
+            window.SetVisible(true);
         }
 
         void OnDestroy()
         {
             Debug.Log("TAC Flight Computer [" + this.GetInstanceID().ToString("X") + "][" + Time.time + "]: OnDestroy");
+            Save();
+        }
+
+        private void Load()
+        {
+            if (File.Exists<TacFlightComputer>(configFilename))
+            {
+                ConfigNode config = ConfigNode.Load(configFilename);
+                window.Load(config);
+            }
+        }
+
+        private void Save()
+        {
+            ConfigNode config = new ConfigNode();
+            window.Save(config);
+
+            config.Save(configFilename);
         }
     }
 }
