@@ -8,6 +8,7 @@ mkdir Release\%DIR%
 
 xcopy /s /f /y GameData Release\%DIR%\GameData\
 copy /y LICENSE.txt Release\%DIR%\GameData\%MOD_NAME%\
+copy /y NOTICE.txt Release\%DIR%\GameData\%MOD_NAME%\
 copy /y Readme.txt Release\%DIR%\GameData\%MOD_NAME%\
 
 cd Release\%DIR%
