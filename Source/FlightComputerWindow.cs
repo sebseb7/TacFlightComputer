@@ -38,8 +38,7 @@ namespace Tac
         private string timeToPeriapsis = "";
         private string period = "";
         private string inclination = "";
-        private string altitudeAboveSeaLevel = "";
-        private string altitudeAboveTerrain = "";
+        private string altitudeAboveSurface = "";
 
         public FlightComputerWindow()
             : base("TAC Flight Computer", 200, 200)
@@ -87,8 +86,7 @@ namespace Tac
             GUILayout.Label("Period", labelStyle);
             GUILayout.Label("Inclination", labelStyle);
             GUILayout.Space(5.0f);
-            GUILayout.Label("Altitude (sea level)", labelStyle);
-            GUILayout.Label("Altitude (terrain)", labelStyle);
+            GUILayout.Label("Altitude (surface)", labelStyle);
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
@@ -100,12 +98,10 @@ namespace Tac
             GUILayout.Label(period, valueStyle);
             GUILayout.Label(inclination, valueStyle);
             GUILayout.Space(5.0f);
-            GUILayout.Label(altitudeAboveSeaLevel, valueStyle);
-            GUILayout.Label(altitudeAboveTerrain, valueStyle);
+            GUILayout.Label(altitudeAboveSurface, valueStyle);
             GUILayout.EndVertical();
 
             GUILayout.EndHorizontal();
-
         }
 
         private void UpdateValues()
@@ -120,10 +116,16 @@ namespace Tac
                 timeToPeriapsis = FormatTime(orbit.timeToPe);
                 period = FormatTime(orbit.period);
                 inclination = orbit.inclination.ToString("0.00") + "°";
-                altitudeAboveSeaLevel = FormatDistance(orbit.altitude);
 
                 Vessel vessel = FlightGlobals.fetch.activeVessel;
-                altitudeAboveTerrain = FormatDistance(orbit.altitude - vessel.terrainAltitude);
+                if (vessel.terrainAltitude > 0)
+                {
+                    altitudeAboveSurface = FormatDistance(orbit.altitude - vessel.terrainAltitude);
+                }
+                else
+                {
+                    altitudeAboveSurface = FormatDistance(orbit.altitude);
+                }
             }
         }
 
@@ -140,7 +142,7 @@ namespace Tac
             {
                 return sign + (value / 1000000.0).ToString("0.00") + " Mm";
             }
-            if (value > 1000.0)
+            else if (value > 1000.0)
             {
                 return sign + (value / 1000.0).ToString("0.00") + " km";
             }
