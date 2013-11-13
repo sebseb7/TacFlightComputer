@@ -154,6 +154,13 @@ namespace Tac
 
         private string FormatTime(double value)
         {
+            string sign = "";
+            if (value < 0.0)
+            {
+                sign = "-";
+                value = -value;
+            }
+
             const double SECONDS_PER_MINUTE = 60.0;
             const double MINUTES_PER_HOUR = 60.0;
             const double HOURS_PER_DAY = 24.0;
@@ -171,20 +178,20 @@ namespace Tac
 
             if (days > 0)
             {
-                return days.ToString("#0") + ":"
+                return sign + days.ToString("#0") + ":"
                     + hours.ToString("00") + ":"
                     + minutes.ToString("00") + ":"
                     + seconds.ToString("00");
             }
             else if (hours > 0)
             {
-                return hours.ToString("#0") + ":"
+                return sign + hours.ToString("#0") + ":"
                     + minutes.ToString("00") + ":"
                     + seconds.ToString("00");
             }
             else
             {
-                return minutes.ToString("#0") + ":"
+                return sign + minutes.ToString("#0") + ":"
                     + seconds.ToString("00.0");
             }
         }
