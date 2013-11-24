@@ -42,7 +42,15 @@ namespace Tac
         {
             Debug.Log("TAC Flight Computer [" + this.GetInstanceID().ToString("X") + "][" + Time.time + "]: Start");
             Load();
-            window.SetVisible(true);
+
+            if (HighLogic.CurrentGame.Mode != Game.Modes.CAREER || ResearchAndDevelopment.GetTechnologyState("generalRocketry") == RDTech.State.Available)
+            {
+                window.SetVisible(true);
+            }
+            else
+            {
+                window.SetVisible(false);
+            }
         }
 
         void OnDestroy()
