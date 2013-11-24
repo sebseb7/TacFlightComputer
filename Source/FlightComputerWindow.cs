@@ -40,9 +40,32 @@ namespace Tac
         private string inclination = "";
         private string altitudeAboveSurface = "";
 
+        private bool minimized = false;
+
         public FlightComputerWindow()
             : base("TAC Flight Computer", 200, 200)
         {
+            base.Resizable = false;
+            base.HideCloseButton = true;
+        }
+
+        public override ConfigNode Load(ConfigNode config)
+        {
+            ConfigNode windowConfig = base.Load(config);
+
+            if (windowConfig != null)
+            {
+                minimized = Utilities.GetValue(windowConfig, "minimized", minimized);
+            }
+
+            return windowConfig;
+        }
+
+        public override ConfigNode Save(ConfigNode config)
+        {
+            ConfigNode windowConfig = base.Save(config);
+            windowConfig.AddValue("minimized", minimized);
+            return windowConfig;
         }
 
         protected override void ConfigureStyles()
@@ -68,40 +91,49 @@ namespace Tac
 
         protected override void DrawWindowContents(int windowId)
         {
-            float now = Time.time;
-            if ((now - lastUpdateTime) > updateInterval)
+            if (!minimized)
             {
-                lastUpdateTime = now;
-                UpdateValues();
+                float now = Time.time;
+                if ((now - lastUpdateTime) > updateInterval)
+                {
+                    lastUpdateTime = now;
+                    UpdateValues();
+                }
+
+                GUILayout.BeginHorizontal();
+
+                GUILayout.BeginVertical();
+                GUILayout.Label("Apoapsis", labelStyle);
+                GUILayout.Label("Periapsis", labelStyle);
+                GUILayout.Label("Time to Apoapsis", labelStyle);
+                GUILayout.Label("Time to Periapsis", labelStyle);
+                GUILayout.Space(5.0f);
+                GUILayout.Label("Period", labelStyle);
+                GUILayout.Label("Inclination", labelStyle);
+                GUILayout.Space(5.0f);
+                GUILayout.Label("Altitude (surface)", labelStyle);
+                GUILayout.EndVertical();
+
+                GUILayout.BeginVertical();
+                GUILayout.Label(apoapsis, valueStyle);
+                GUILayout.Label(periapsis, valueStyle);
+                GUILayout.Label(timeToApoapsis, valueStyle);
+                GUILayout.Label(timeToPeriapsis, valueStyle);
+                GUILayout.Space(5.0f);
+                GUILayout.Label(period, valueStyle);
+                GUILayout.Label(inclination, valueStyle);
+                GUILayout.Space(5.0f);
+                GUILayout.Label(altitudeAboveSurface, valueStyle);
+                GUILayout.EndVertical();
+
+                GUILayout.EndHorizontal();
             }
 
-            GUILayout.BeginHorizontal();
-
-            GUILayout.BeginVertical();
-            GUILayout.Label("Apoapsis", labelStyle);
-            GUILayout.Label("Periapsis", labelStyle);
-            GUILayout.Label("Time to Apoapsis", labelStyle);
-            GUILayout.Label("Time to Periapsis", labelStyle);
-            GUILayout.Space(5.0f);
-            GUILayout.Label("Period", labelStyle);
-            GUILayout.Label("Inclination", labelStyle);
-            GUILayout.Space(5.0f);
-            GUILayout.Label("Altitude (surface)", labelStyle);
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical();
-            GUILayout.Label(apoapsis, valueStyle);
-            GUILayout.Label(periapsis, valueStyle);
-            GUILayout.Label(timeToApoapsis, valueStyle);
-            GUILayout.Label(timeToPeriapsis, valueStyle);
-            GUILayout.Space(5.0f);
-            GUILayout.Label(period, valueStyle);
-            GUILayout.Label(inclination, valueStyle);
-            GUILayout.Space(5.0f);
-            GUILayout.Label(altitudeAboveSurface, valueStyle);
-            GUILayout.EndVertical();
-
-            GUILayout.EndHorizontal();
+            if (GUI.Button(new Rect(windowPos.width - 24, 4, 20, 20), "_", closeButtonStyle))
+            {
+                minimized = !minimized;
+                SetSize(10, 10);
+            }
         }
 
         private void UpdateValues()
@@ -148,7 +180,7 @@ namespace Tac
             }
             else
             {
-                return sign + value.ToString("#,##0.0") + " m";
+                return sign + value.ToString("0.0") + " m";
             }
         }
 
