@@ -30,32 +30,58 @@ namespace Tac
     {
         private string configFilename;
         private FlightComputerWindow window;
+        private bool checkedUnlockStatus = false;
+        private string unlockTech = "generalRocketry";
 
         void Awake()
         {
-            Debug.Log("TAC Flight Computer [" + this.GetInstanceID().ToString("X") + "][" + Time.time + "]: Awake");
+            this.Log("Awake");
             configFilename = IOUtils.GetFilePathFor(this.GetType(), "FlightComputer.cfg");
             window = new FlightComputerWindow();
         }
 
         void Start()
         {
-            Debug.Log("TAC Flight Computer [" + this.GetInstanceID().ToString("X") + "][" + Time.time + "]: Start");
+            this.Log("Start");
             Load();
+            window.SetVisible(false);
+        }
 
-            if (HighLogic.CurrentGame.Mode != Game.Modes.CAREER || ResearchAndDevelopment.GetTechnologyState("generalRocketry") == RDTech.State.Available)
+        void Update()
+        {
+            if (!checkedUnlockStatus)
             {
-                window.SetVisible(true);
-            }
-            else
-            {
-                window.SetVisible(false);
+                if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
+                {
+                    if (ResearchAndDevelopment.Instance != null)
+                    {
+                        checkedUnlockStatus = true;
+                        bool unlocked = ResearchAndDevelopment.GetTechnologyState(unlockTech) == RDTech.State.Available;
+                        if (unlocked)
+                        {
+                            this.Log("Update: career mode, tech has been researched");
+                            window.SetVisible(true);
+                        }
+                        else
+                        {
+                            this.Log("Update: career mode, tech has not been researched");
+                            window.SetVisible(false);
+                            Destroy(this);
+                        }
+                    }
+                }
+                else
+                {
+                    this.Log("Update: not career mode, unlocking");
+                    checkedUnlockStatus = true;
+                    window.SetVisible(true);
+                }
             }
         }
 
         void OnDestroy()
         {
-            Debug.Log("TAC Flight Computer [" + this.GetInstanceID().ToString("X") + "][" + Time.time + "]: OnDestroy");
+            this.Log("OnDestroy");
             Save();
         }
 
@@ -65,6 +91,8 @@ namespace Tac
             {
                 ConfigNode config = ConfigNode.Load(configFilename);
                 window.Load(config);
+                unlockTech = Utilities.GetValue(config, "unlockTech", unlockTech);
+                this.Log("Load: " + config);
             }
         }
 
@@ -72,8 +100,10 @@ namespace Tac
         {
             ConfigNode config = new ConfigNode();
             window.Save(config);
+            config.AddValue("unlockTech", unlockTech);
 
             config.Save(configFilename);
+            this.Log("Save: " + config);
         }
     }
 }

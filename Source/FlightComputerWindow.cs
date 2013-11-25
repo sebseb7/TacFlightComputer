@@ -43,7 +43,7 @@ namespace Tac
         private bool minimized = false;
 
         public FlightComputerWindow()
-            : base("TAC Flight Computer", 200, 200)
+            : base("TAC Flight Computer", 200, 180)
         {
             base.Resizable = false;
             base.HideCloseButton = true;
@@ -107,10 +107,10 @@ namespace Tac
                 GUILayout.Label("Periapsis", labelStyle);
                 GUILayout.Label("Time to Apoapsis", labelStyle);
                 GUILayout.Label("Time to Periapsis", labelStyle);
-                GUILayout.Space(5.0f);
+                GUILayout.Space(5);
                 GUILayout.Label("Period", labelStyle);
                 GUILayout.Label("Inclination", labelStyle);
-                GUILayout.Space(5.0f);
+                GUILayout.Space(5);
                 GUILayout.Label("Altitude (surface)", labelStyle);
                 GUILayout.EndVertical();
 
@@ -119,20 +119,24 @@ namespace Tac
                 GUILayout.Label(periapsis, valueStyle);
                 GUILayout.Label(timeToApoapsis, valueStyle);
                 GUILayout.Label(timeToPeriapsis, valueStyle);
-                GUILayout.Space(5.0f);
+                GUILayout.Space(5);
                 GUILayout.Label(period, valueStyle);
                 GUILayout.Label(inclination, valueStyle);
-                GUILayout.Space(5.0f);
+                GUILayout.Space(5);
                 GUILayout.Label(altitudeAboveSurface, valueStyle);
                 GUILayout.EndVertical();
 
                 GUILayout.EndHorizontal();
             }
+            else
+            {
+                GUILayout.Space(1);
+            }
 
             if (GUI.Button(new Rect(windowPos.width - 24, 4, 20, 20), "_", closeButtonStyle))
             {
                 minimized = !minimized;
-                SetSize(10, 10);
+                windowPos.height = 10;
             }
         }
 
