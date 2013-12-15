@@ -48,13 +48,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\TacLib\Source\Logging.cs">
+    <Compile Include="..\TacLib\Source\Logging.cs">
       <Link>Logging.cs</Link>
     </Compile>
-    <Compile Include="..\..\TacLib\Source\Utilities.cs">
+    <Compile Include="..\TacLib\Source\Utilities.cs">
       <Link>Utilities.cs</Link>
     </Compile>
-    <Compile Include="..\..\TacLib\Source\Window.cs">
+    <Compile Include="..\TacLib\Source\Window.cs">
       <Link>Window.cs</Link>
     </Compile>
     <Compile Include="FlightComputer.cs" />
@@ -62,10 +62,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\TacLib\Source\CommonProperties.proj" />
+  <Import Project="..\TacLib\Source\CommonProperties.proj" />
   <PropertyGroup>
     <AssemblyMajorVersion>0</AssemblyMajorVersion>
-    <AssemblyMinorVersion>3</AssemblyMinorVersion>
+    <AssemblyMinorVersion>4</AssemblyMinorVersion>
+    <AssemblyFileBuildNumber>0</AssemblyFileBuildNumber>
     <AssemblyFileMajorVersion>$(AssemblyMajorVersion)</AssemblyFileMajorVersion>
     <AssemblyFileMinorVersion>$(AssemblyMinorVersion)</AssemblyFileMinorVersion>
   </PropertyGroup>
