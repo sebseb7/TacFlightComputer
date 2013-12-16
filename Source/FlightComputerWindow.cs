@@ -39,13 +39,13 @@ namespace Tac
         private string period = "";
         private string inclination = "";
         private string altitudeAboveSurface = "";
+        private string biome = "";
 
         private bool minimized = false;
 
         public FlightComputerWindow()
             : base("TAC Flight Computer", 200, 180)
         {
-            base.Resizable = false;
             base.HideCloseButton = true;
         }
 
@@ -112,6 +112,8 @@ namespace Tac
                 GUILayout.Label("Inclination", labelStyle);
                 GUILayout.Space(5);
                 GUILayout.Label("Altitude (surface)", labelStyle);
+                GUILayout.Space(5);
+                GUILayout.Label("Biome", labelStyle);
                 GUILayout.EndVertical();
 
                 GUILayout.BeginVertical();
@@ -124,6 +126,8 @@ namespace Tac
                 GUILayout.Label(inclination, valueStyle);
                 GUILayout.Space(5);
                 GUILayout.Label(altitudeAboveSurface, valueStyle);
+                GUILayout.Space(5);
+                GUILayout.Label(biome, valueStyle);
                 GUILayout.EndVertical();
 
                 GUILayout.EndHorizontal();
@@ -144,7 +148,8 @@ namespace Tac
         {
             if (FlightGlobals.ready && FlightGlobals.fetch.activeVessel != null)
             {
-                Orbit orbit = FlightGlobals.fetch.activeVessel.orbit;
+                Vessel vessel = FlightGlobals.fetch.activeVessel;
+                Orbit orbit = vessel.orbit;
 
                 apoapsis = FormatDistance(orbit.ApA);
                 periapsis = FormatDistance(orbit.PeA);
@@ -153,7 +158,6 @@ namespace Tac
                 period = FormatTime(orbit.period);
                 inclination = orbit.inclination.ToString("0.00") + "°";
 
-                Vessel vessel = FlightGlobals.fetch.activeVessel;
                 if (vessel.terrainAltitude > 0)
                 {
                     altitudeAboveSurface = FormatDistance(orbit.altitude - vessel.terrainAltitude);
@@ -162,10 +166,13 @@ namespace Tac
                 {
                     altitudeAboveSurface = FormatDistance(orbit.altitude);
                 }
+
+                CBAttributeMap.MapAttribute mapAttribute = vessel.mainBody.BiomeMap.GetAtt(ToRadians(vessel.latitude), ToRadians(vessel.longitude));
+                biome = mapAttribute.name;
             }
         }
 
-        private string FormatDistance(double value)
+        private static string FormatDistance(double value)
         {
             string sign = "";
             if (value < 0.0)
@@ -188,7 +195,7 @@ namespace Tac
             }
         }
 
-        private string FormatTime(double value)
+        private static string FormatTime(double value)
         {
             string sign = "";
             if (value < 0.0)
@@ -230,6 +237,11 @@ namespace Tac
                 return sign + minutes.ToString("#0") + ":"
                     + seconds.ToString("00.0");
             }
+        }
+
+        private static double ToRadians(double degrees)
+        {
+            return degrees * Math.PI / 180.0;
         }
     }
 }
