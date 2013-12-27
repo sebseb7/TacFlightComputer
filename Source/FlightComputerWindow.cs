@@ -153,9 +153,9 @@ namespace Tac
 
                 apoapsis = FormatDistance(orbit.ApA);
                 periapsis = FormatDistance(orbit.PeA);
-                timeToApoapsis = FormatTime(orbit.timeToAp);
-                timeToPeriapsis = FormatTime(orbit.timeToPe);
-                period = FormatTime(orbit.period);
+                timeToApoapsis = Utilities.FormatTime(orbit.timeToAp, 1);
+                timeToPeriapsis = Utilities.FormatTime(orbit.timeToPe, 1);
+                period = Utilities.FormatTime(orbit.period, 1);
                 inclination = orbit.inclination.ToString("0.00") + "°";
 
                 if (vessel.terrainAltitude > 0)
@@ -192,50 +192,6 @@ namespace Tac
             else
             {
                 return sign + value.ToString("0.0") + " m";
-            }
-        }
-
-        private static string FormatTime(double value)
-        {
-            string sign = "";
-            if (value < 0.0)
-            {
-                sign = "-";
-                value = -value;
-            }
-
-            const double SECONDS_PER_MINUTE = 60.0;
-            const double MINUTES_PER_HOUR = 60.0;
-            const double HOURS_PER_DAY = 24.0;
-
-            double seconds = value;
-
-            long minutes = (long)(seconds / SECONDS_PER_MINUTE);
-            seconds -= (long)(minutes * SECONDS_PER_MINUTE);
-
-            long hours = (long)(minutes / MINUTES_PER_HOUR);
-            minutes -= (long)(hours * MINUTES_PER_HOUR);
-
-            long days = (long)(hours / HOURS_PER_DAY);
-            hours -= (long)(days * HOURS_PER_DAY);
-
-            if (days > 0)
-            {
-                return sign + days.ToString("#0") + ":"
-                    + hours.ToString("00") + ":"
-                    + minutes.ToString("00") + ":"
-                    + seconds.ToString("00");
-            }
-            else if (hours > 0)
-            {
-                return sign + hours.ToString("#0") + ":"
-                    + minutes.ToString("00") + ":"
-                    + seconds.ToString("00");
-            }
-            else
-            {
-                return sign + minutes.ToString("#0") + ":"
-                    + seconds.ToString("00.0");
             }
         }
 
