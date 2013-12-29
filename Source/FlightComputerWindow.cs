@@ -167,7 +167,7 @@ namespace Tac
                     altitudeAboveSurface = FormatDistance(orbit.altitude);
                 }
 
-                CBAttributeMap.MapAttribute mapAttribute = vessel.mainBody.BiomeMap.GetAtt(ToRadians(vessel.latitude), ToRadians(vessel.longitude));
+                CBAttributeMap.MapAttribute mapAttribute = vessel.mainBody.BiomeMap.GetAtt(Utilities.ToRadians(vessel.latitude), Utilities.ToRadians(vessel.longitude));
                 biome = mapAttribute.name;
             }
         }
@@ -193,11 +193,6 @@ namespace Tac
             {
                 return sign + value.ToString("0.0") + " m";
             }
-        }
-
-        private static double ToRadians(double degrees)
-        {
-            return degrees * Math.PI / 180.0;
         }
     }
 }
