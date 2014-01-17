@@ -40,6 +40,7 @@ namespace Tac
         private string inclination = "";
         private string altitudeAboveSurface = "";
         private string biome = "";
+        private string situation = "";
 
         private bool minimized = false;
 
@@ -107,13 +108,11 @@ namespace Tac
                 GUILayout.Label("Periapsis", labelStyle);
                 GUILayout.Label("Time to Apoapsis", labelStyle);
                 GUILayout.Label("Time to Periapsis", labelStyle);
-                GUILayout.Space(5);
                 GUILayout.Label("Period", labelStyle);
                 GUILayout.Label("Inclination", labelStyle);
-                GUILayout.Space(5);
                 GUILayout.Label("Altitude (surface)", labelStyle);
-                GUILayout.Space(5);
                 GUILayout.Label("Biome", labelStyle);
+                GUILayout.Label("Situation", labelStyle);
                 GUILayout.EndVertical();
 
                 GUILayout.BeginVertical();
@@ -121,13 +120,11 @@ namespace Tac
                 GUILayout.Label(periapsis, valueStyle);
                 GUILayout.Label(timeToApoapsis, valueStyle);
                 GUILayout.Label(timeToPeriapsis, valueStyle);
-                GUILayout.Space(5);
                 GUILayout.Label(period, valueStyle);
                 GUILayout.Label(inclination, valueStyle);
-                GUILayout.Space(5);
                 GUILayout.Label(altitudeAboveSurface, valueStyle);
-                GUILayout.Space(5);
                 GUILayout.Label(biome, valueStyle);
+                GUILayout.Label(situation, valueStyle);
                 GUILayout.EndVertical();
 
                 GUILayout.EndHorizontal();
@@ -169,6 +166,43 @@ namespace Tac
 
                 CBAttributeMap.MapAttribute mapAttribute = vessel.mainBody.BiomeMap.GetAtt(Utilities.ToRadians(vessel.latitude), Utilities.ToRadians(vessel.longitude));
                 biome = mapAttribute.name;
+
+                situation = GetSituation(vessel);
+            }
+        }
+
+        /*
+         * Based on MechJebModuleInfoItems.CurrentBiome() from MechJeb:
+         * https://github.com/MuMech/MechJeb2/blob/4d9365125df4934fa062817fef6732efa7b94780/MechJeb2/MechJebModuleInfoItems.cs#L951
+         */
+        private string GetSituation(Vessel vessel)
+        {
+            switch (vessel.situation)
+            {
+                case Vessel.Situations.PRELAUNCH:
+                    return "Prelaunch";
+                case Vessel.Situations.LANDED:
+                    return "Landed";
+                case Vessel.Situations.SPLASHED:
+                    return "Splashed Down";
+                case Vessel.Situations.FLYING:
+                    if (vessel.altitude < vessel.mainBody.scienceValues.flyingAltitudeThreshold)
+                    {
+                        return "Flying";
+                    }
+                    else
+                    {
+                        return "Flying High";
+                    }
+                default:
+                    if (vessel.altitude < vessel.mainBody.scienceValues.spaceAltitudeThreshold)
+                    {
+                        return "Near Space";
+                    }
+                    else
+                    {
+                        return "Space";
+                    }
             }
         }
 
