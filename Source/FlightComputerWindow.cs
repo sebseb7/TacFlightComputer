@@ -26,11 +26,13 @@ namespace Tac
 {
     class FlightComputerWindow : Window<FlightComputerWindow>
     {
+        private readonly string version;
         private float lastUpdateTime = 0.0f;
         private float updateInterval = 0.1f;
 
-        private GUIStyle labelStyle = null;
-        private GUIStyle valueStyle = null;
+        private GUIStyle labelStyle;
+        private GUIStyle valueStyle;
+        private GUIStyle versionStyle;
 
         private string apoapsis = "";
         private string periapsis = "";
@@ -48,6 +50,7 @@ namespace Tac
             : base("TAC Flight Computer", 200, 180)
         {
             base.HideCloseButton = true;
+            version = Utilities.GetDllVersion(this);
         }
 
         public override ConfigNode Load(ConfigNode config)
@@ -87,6 +90,8 @@ namespace Tac
                 valueStyle = new GUIStyle(labelStyle);
                 valueStyle.alignment = TextAnchor.MiddleRight;
                 valueStyle.stretchWidth = true;
+
+                versionStyle = Utilities.GetVersionStyle();
             }
         }
 
@@ -128,6 +133,8 @@ namespace Tac
                 GUILayout.EndVertical();
 
                 GUILayout.EndHorizontal();
+
+                GUI.Label(new Rect(4, windowPos.height - 13, windowPos.width - 20, 12), "TAC Flight Computer v" + version, versionStyle);
             }
             else
             {
