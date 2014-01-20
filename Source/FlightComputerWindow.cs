@@ -60,6 +60,7 @@ namespace Tac
             if (windowConfig != null)
             {
                 minimized = Utilities.GetValue(windowConfig, "minimized", minimized);
+                updateInterval = Utilities.GetValue(windowConfig, "updateInterval", updateInterval);
             }
 
             return windowConfig;
@@ -69,6 +70,7 @@ namespace Tac
         {
             ConfigNode windowConfig = base.Save(config);
             windowConfig.AddValue("minimized", minimized);
+            windowConfig.AddValue("updateInterval", updateInterval);
             return windowConfig;
         }
 
