@@ -173,7 +173,7 @@ namespace Tac
                     altitudeAboveSurface = FormatDistance(orbit.altitude);
                 }
 
-                CBAttributeMap.MapAttribute mapAttribute = vessel.mainBody.BiomeMap.GetAtt(Utilities.ToRadians(vessel.latitude), Utilities.ToRadians(vessel.longitude));
+                CBAttributeMapSO.MapAttribute mapAttribute = vessel.mainBody.BiomeMap.GetAtt(Utilities.ToRadians(vessel.latitude), Utilities.ToRadians(vessel.longitude));
                 biome = mapAttribute.name;
 
                 situation = GetSituation(vessel);

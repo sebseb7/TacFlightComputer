@@ -74,8 +74,8 @@
     <ModUrl></ModUrl>
     <DownloadUrl></DownloadUrl>
     <KspVersionMajor>0</KspVersionMajor>
-    <KspVersionMinor>24</KspVersionMinor>
-    <KspVersionPatch>2</KspVersionPatch>
+    <KspVersionMinor>90</KspVersionMinor>
+    <KspVersionPatch>0</KspVersionPatch>
   </PropertyGroup>
   <Target Name="BeforeBuild">
     <CallTarget Targets="GitInfo" />
