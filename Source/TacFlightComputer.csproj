@@ -62,7 +62,7 @@
   <Import Project="..\TacLib\Source\CommonProperties.proj" />
   <PropertyGroup>
     <AssemblyMajorVersion>0</AssemblyMajorVersion>
-    <AssemblyMinorVersion>7</AssemblyMinorVersion>
+    <AssemblyMinorVersion>8</AssemblyMinorVersion>
     <AssemblyBuildNumber>0</AssemblyBuildNumber>
     <AssemblyFileMajorVersion>$(AssemblyMajorVersion)</AssemblyFileMajorVersion>
     <AssemblyFileMinorVersion>$(AssemblyMinorVersion)</AssemblyFileMinorVersion>
@@ -73,8 +73,8 @@
     <ModName>TAC Flight Computer</ModName>
     <ModUrl></ModUrl>
     <DownloadUrl></DownloadUrl>
-    <KspVersionMajor>0</KspVersionMajor>
-    <KspVersionMinor>90</KspVersionMinor>
+    <KspVersionMajor>1</KspVersionMajor>
+    <KspVersionMinor>0</KspVersionMinor>
     <KspVersionPatch>0</KspVersionPatch>
   </PropertyGroup>
   <Target Name="BeforeBuild">
